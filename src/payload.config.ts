@@ -50,6 +50,7 @@ export default buildConfig({
       if (payload.db.drizzle) {
         await payload.db.drizzle.execute(sql`ALTER TABLE "site_settings" ADD COLUMN IF NOT EXISTS "cache_revalidate" varchar;`)
         await payload.db.drizzle.execute(sql`ALTER TABLE "articles" ADD COLUMN IF NOT EXISTS "is_trending" boolean;`)
+        await payload.db.drizzle.execute(sql`ALTER TABLE "_articles_v" ADD COLUMN IF NOT EXISTS "version_is_trending" boolean;`)
         payload.logger.info('Successfully verified/added missing columns (cache_revalidate, is_trending) to production DB.')
       }
     } catch (e) {
