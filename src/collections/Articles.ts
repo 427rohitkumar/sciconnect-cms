@@ -433,6 +433,15 @@ export const Articles: CollectionConfig = {
       },
     },
     {
+      name: 'isTrending',
+      label: 'Mark as Trending',
+      type: 'checkbox',
+      defaultValue: false,
+      admin: {
+        position: 'sidebar',
+      },
+    },
+    {
       name: 'newsletterStatus',
       type: 'ui',
       admin: {

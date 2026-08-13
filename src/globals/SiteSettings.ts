@@ -599,6 +599,29 @@ export const SiteSettings: GlobalConfig = {
             },
           ],
         },
+        {
+          label: 'Performance',
+          fields: [
+            {
+              name: 'cacheRevalidate',
+              type: 'select',
+              label: 'Frontend Cache Update Frequency',
+              defaultValue: '60',
+              admin: {
+                description: 'How quickly frontend content (articles, menus, etc) should refresh after you make a change in the CMS.',
+              },
+              options: [
+                { label: 'Fast (5 seconds)', value: '5' },
+                { label: 'Medium (15 seconds)', value: '15' },
+                { label: 'Balanced (30 seconds)', value: '30' },
+                { label: 'Standard (1 minute)', value: '60' },
+                { label: 'Slow (5 minutes)', value: '300' },
+                { label: 'Rare (15 minutes)', value: '900' },
+                { label: 'Very Rare (1 hour)', value: '3600' },
+              ],
+            },
+          ],
+        },
       ],
     },
   ],

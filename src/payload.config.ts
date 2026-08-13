@@ -52,7 +52,7 @@ export default buildConfig({
     },
     components: {
       Nav: '/components/admin/navigation/CustomNav',
-      beforeDashboard: ['/components/admin/PWASetup#PWASetup'],
+      providers: ['/components/admin/PWASetup#PWASetup'],
       graphics: {
         Logo: '/components/admin/Logo',
         Icon: '/components/admin/Icon',

@@ -14,7 +14,7 @@ export const Tags: CollectionConfig = {
   admin: {
     group: 'Content',
     useAsTitle: 'name',
-    defaultColumns: ['name', 'slug', 'status', 'createdAt'],
+    defaultColumns: ['name', 'slug', 'createdAt'],
     listSearchableFields: ['name', 'slug'],
     components: {
       views: {
@@ -109,34 +109,13 @@ export const Tags: CollectionConfig = {
       required: true,
     },
     {
-      name: 'description',
-      type: 'textarea',
-      required: false,
-    },
-    {
       name: 'slug',
       type: 'text',
       required: false,
       unique: true,
       index: true,
       admin: {
-        position: 'sidebar',
-      },
-    },
-    {
-      name: 'status',
-      type: 'select',
-      required: true,
-      defaultValue: 'active',
-      options: [
-        { label: 'Active', value: 'active' },
-        { label: 'Inactive', value: 'inactive' },
-      ],
-      access: {
-        update: canUpdateStatusField,
-      },
-      admin: {
-        position: 'sidebar',
+        hidden: true,
       },
     },
   ],

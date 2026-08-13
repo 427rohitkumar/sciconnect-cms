@@ -2,7 +2,7 @@
 
 import { useEffect } from 'react'
 
-export function PWASetup() {
+export function PWASetup({ children }: { children?: React.ReactNode }) {
   useEffect(() => {
     // Register service worker
     if ('serviceWorker' in navigator) {
@@ -57,5 +57,5 @@ export function PWASetup() {
     })
   }, [])
 
-  return null
+  return <>{children}</>
 }
