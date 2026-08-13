@@ -17,7 +17,7 @@ services:
       - foodrestro-network
     volumes:
       # Persist uploaded media files
-      - media_data:/app/public/media
+      - media_data:/app/media
 
 networks:
   foodrestro-network:
