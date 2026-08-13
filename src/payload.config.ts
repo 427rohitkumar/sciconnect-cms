@@ -43,6 +43,18 @@ export default buildConfig({
         payload.logger.error({ err }, 'Migration error')
       }
     }
+
+    // Temporary auto-schema-fix for production (since push:true doesn't run in production)
+    try {
+      const { sql } = await import('@payloadcms/db-postgres')
+      if (payload.db.drizzle) {
+        await payload.db.drizzle.execute(sql`ALTER TABLE "site_settings" ADD COLUMN IF NOT EXISTS "cache_revalidate" varchar;`)
+        await payload.db.drizzle.execute(sql`ALTER TABLE "articles" ADD COLUMN IF NOT EXISTS "is_trending" boolean;`)
+        payload.logger.info('Successfully verified/added missing columns (cache_revalidate, is_trending) to production DB.')
+      }
+    } catch (e) {
+      payload.logger.error(e, 'Error auto-fixing missing schema columns')
+    }
   },
   admin: {
     user: Users.slug,
