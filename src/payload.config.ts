@@ -61,6 +61,12 @@ export default buildConfig({
     user: Users.slug,
     meta: {
       titleSuffix: '- Sci-Connect CMS',
+      description: 'Sci-Connect is a modern platform for sharing scientific knowledge, research, and innovation. Manage your articles, videos, and content through this CMS.',
+      openGraph: {
+        title: 'Sci-Connect CMS Dashboard',
+        description: 'Sci-Connect is a modern platform for sharing scientific knowledge, research, and innovation. Manage your articles, videos, and content through this CMS.',
+        siteName: 'Sci-Connect',
+      },
       icons: [{ url: '/favicon.ico' }],
     },
     components: {
