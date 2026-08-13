@@ -69,4 +69,5 @@ EXPOSE 3000
 ENV PORT 3000
 
 # Run migrations first, then start the server
-CMD ["sh", "-c", "node node_modules/.bin/payload migrate && HOSTNAME='0.0.0.0' node server.js"]
+# Migrations now handled via onInit hook in payload.config.ts
+CMD HOSTNAME="0.0.0.0" node server.js

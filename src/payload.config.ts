@@ -30,6 +30,20 @@ const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
 
 export default buildConfig({
+  onInit: async (payload) => {
+    try {
+      payload.logger.info('Running database migrations...')
+      await payload.db.migrate()
+      payload.logger.info('Database migrations completed successfully')
+    } catch (err: any) {
+      // If migrations already up to date, that's fine
+      if (err?.message?.includes('No migrations')) {
+        payload.logger.info('No pending migrations')
+      } else {
+        payload.logger.error({ err }, 'Migration error')
+      }
+    }
+  },
   admin: {
     user: Users.slug,
     meta: {
