@@ -85,6 +85,7 @@ export default buildConfig({
     pool: {
       connectionString: process.env.DATABASE_URL || '',
     },
+    push: true, // Auto-create/sync tables on startup (no migration files needed)
   }),
   sharp,
   jobs: {
