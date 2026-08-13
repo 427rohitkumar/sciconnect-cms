@@ -1,0 +1,103 @@
+.color-picker-field {
+  margin-bottom: 2rem;
+
+  .field-label {
+    display: block;
+    margin-bottom: 0.25rem;
+    font-weight: 600;
+  }
+
+  .field-description {
+    color: var(--theme-elevation-400);
+    margin-bottom: 0.75rem;
+    font-size: 0.875rem;
+  }
+
+  .color-control-wrapper {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    background: var(--theme-elevation-50);
+    border: 1px solid var(--theme-elevation-150);
+    border-radius: 8px;
+    padding: 0.5rem 0.75rem;
+    width: 100%;
+    transition: all 0.2s ease;
+
+    &:focus-within {
+      border-color: var(--theme-elevation-400);
+      background: var(--theme-elevation-100);
+    }
+    
+    &.has-error {
+      border-color: var(--theme-error-400, #dc3545);
+    }
+  }
+
+  .color-swatch-wrapper {
+    position: relative;
+    width: 38px;
+    height: 38px;
+    border-radius: 50%;
+    overflow: hidden;
+    flex-shrink: 0;
+    border: 2px solid var(--theme-elevation-200);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    
+    &:focus-within {
+      border-color: var(--theme-success-400, #28a745);
+    }
+
+    input[type="color"] {
+      position: absolute;
+      top: -10px;
+      left: -10px;
+      width: 60px;
+      height: 60px;
+      border: none;
+      padding: 0;
+      background: none;
+      cursor: pointer;
+      
+      &::-webkit-color-swatch-wrapper {
+        padding: 0;
+      }
+      &::-webkit-color-swatch {
+        border: none;
+      }
+      &::-moz-color-swatch {
+        border: none;
+      }
+    }
+  }
+
+  .hex-input-wrapper {
+    flex: 1;
+    display: flex;
+    align-items: center;
+
+    input[type="text"] {
+      width: 100%;
+      background: transparent;
+      border: none;
+      outline: none;
+      font-family: monospace;
+      font-size: 1rem;
+      color: var(--theme-elevation-800);
+      padding: 0.25rem 0;
+      margin: 0;
+      
+      &:focus {
+        outline: none;
+        box-shadow: none;
+      }
+    }
+  }
+
+  .error-message {
+    color: var(--theme-error-400, #dc3545);
+    font-size: 0.875rem;
+    margin-top: 0.5rem;
+    display: block;
+  }
+}

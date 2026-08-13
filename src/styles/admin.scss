@@ -1,0 +1,875 @@
+/* SciConnectWorld Payload Admin Custom Styles */
+
+.sciconnect-dashboard-container {
+  padding: var(--base, 24px);
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+.sciconnect-dashboard-header {
+  margin-bottom: 24px;
+}
+
+.sciconnect-dashboard-title {
+  font-size: 1.8rem;
+  font-weight: 700;
+  margin: 0 0 6px 0;
+  color: var(--theme-elevation-1000);
+}
+
+.sciconnect-dashboard-subtitle {
+  font-size: 0.95rem;
+  color: var(--theme-elevation-600);
+  margin: 0;
+}
+
+.sciconnect-dashboard-timestamp {
+  font-size: 0.8rem;
+  color: var(--theme-elevation-400);
+  margin-top: 4px;
+}
+
+/* Base Dashboard Grid */
+.sciconnect-dashboard-layout {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.sciconnect-grid-row {
+  display: grid;
+  gap: 24px;
+}
+
+.sciconnect-grid-row--6 {
+  grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+}
+
+.sciconnect-grid-row--2 {
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+}
+
+@media (min-width: 1024px) {
+  .sciconnect-grid-row--2-1 {
+    grid-template-columns: 2fr 1fr;
+  }
+}
+
+/* Widget Card */
+.sciconnect-widget {
+  background: var(--theme-elevation-50);
+  border: 1px solid var(--theme-elevation-200);
+  border-radius: 8px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+}
+
+.sciconnect-widget__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.sciconnect-widget__title {
+  font-size: 1.05rem;
+  font-weight: 600;
+  margin: 0;
+  color: var(--theme-elevation-1000);
+}
+
+.sciconnect-widget__content {
+  flex: 1;
+}
+
+/* Compact KPI Cards */
+.sciconnect-kpi-card {
+  background: var(--theme-elevation-50);
+  border: 1px solid var(--theme-elevation-200);
+  border-radius: 8px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.sciconnect-kpi-card:hover {
+  border-color: var(--theme-elevation-300);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.sciconnect-kpi-card__header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 0.85rem;
+  color: var(--theme-elevation-600);
+}
+
+.sciconnect-kpi-card__icon {
+  font-size: 1.2rem;
+}
+
+.sciconnect-kpi-card__value {
+  font-size: 1.8rem;
+  font-weight: 700;
+  color: var(--theme-elevation-1000);
+  line-height: 1;
+}
+
+.sciconnect-kpi-card__meta {
+  font-size: 0.75rem;
+  color: var(--theme-elevation-500);
+}
+
+/* Stats Grid */
+.sciconnect-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.sciconnect-stat-card {
+  background: var(--theme-elevation-100);
+  border: 1px solid var(--theme-elevation-200);
+  border-radius: 8px;
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+.sciconnect-stat-card:hover {
+  border-color: var(--theme-elevation-300);
+  transform: translateY(-1px);
+}
+
+.sciconnect-stat-card__icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px;
+  border-radius: 8px;
+  background: var(--theme-elevation-50);
+}
+
+.sciconnect-stat-card__count {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: var(--theme-elevation-1000);
+  line-height: 1.2;
+}
+
+.sciconnect-stat-card__title {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--theme-elevation-600);
+}
+
+/* Sections */
+.sciconnect-dashboard-section {
+  margin-bottom: 32px;
+  background: var(--theme-elevation-100);
+  border: 1px solid var(--theme-elevation-200);
+  border-radius: 8px;
+  padding: 20px 24px;
+}
+
+.sciconnect-dashboard-section__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.sciconnect-dashboard-section__title {
+  font-size: 1.1rem;
+  font-weight: 600;
+  margin: 0 0 16px 0;
+  color: var(--theme-elevation-1000);
+}
+
+.sciconnect-dashboard-section__header .sciconnect-dashboard-section__title {
+  margin-bottom: 0;
+}
+
+.sciconnect-dashboard-section__link {
+  font-size: 0.85rem;
+  font-weight: 500;
+  color: var(--theme-success-500, #10b981);
+  text-decoration: none;
+}
+
+.sciconnect-dashboard-section__link:hover {
+  text-decoration: underline;
+}
+
+/* Quick Actions */
+.sciconnect-quick-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.sciconnect-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  font-size: 0.875rem;
+  font-weight: 500;
+  border-radius: 6px;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease;
+}
+
+.sciconnect-btn--primary {
+  background: var(--theme-success-500, #10b981);
+  color: #ffffff;
+  border: 1px solid transparent;
+}
+
+.sciconnect-btn--primary:hover {
+  opacity: 0.9;
+}
+
+.sciconnect-btn--secondary {
+  background: var(--theme-elevation-150, var(--theme-elevation-100));
+  color: var(--theme-elevation-1000);
+  border: 1px solid var(--theme-elevation-250, var(--theme-elevation-200));
+}
+
+.sciconnect-btn--secondary:hover {
+  background: var(--theme-elevation-200);
+}
+
+/* Table */
+.sciconnect-table-wrapper {
+  overflow-x: auto;
+}
+
+.sciconnect-table {
+  width: 100%;
+  border-collapse: collapse;
+  text-align: left;
+  font-size: 0.9rem;
+}
+
+.sciconnect-table th {
+  padding: 10px 12px;
+  font-weight: 600;
+  font-size: 0.8rem;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--theme-elevation-600);
+  border-bottom: 1px solid var(--theme-elevation-200);
+}
+
+.sciconnect-table td {
+  padding: 12px;
+  border-bottom: 1px solid var(--theme-elevation-150);
+  color: var(--theme-elevation-800);
+}
+
+.sciconnect-table tr:last-child td {
+  border-bottom: none;
+}
+
+.sciconnect-table__title-link {
+  font-weight: 500;
+  color: var(--theme-elevation-1000);
+  text-decoration: none;
+}
+
+.sciconnect-table__title-link:hover {
+  color: var(--theme-success-500, #10b981);
+  text-decoration: underline;
+}
+
+.sciconnect-table__date {
+  color: var(--theme-elevation-500);
+  font-size: 0.85rem;
+}
+
+/* Badges */
+.sciconnect-badge {
+  display: inline-block;
+  padding: 2px 8px;
+  font-size: 0.75rem;
+  font-weight: 600;
+  border-radius: 12px;
+  text-transform: capitalize;
+}
+
+.sciconnect-badge--published {
+  background: rgba(16, 185, 129, 0.15);
+  color: #10b981;
+}
+
+.sciconnect-badge--draft {
+  background: rgba(245, 158, 11, 0.15);
+  color: #f59e0b;
+}
+
+/* Empty State */
+.sciconnect-empty-state {
+  padding: 32px 16px;
+  text-align: center;
+  color: var(--theme-elevation-600);
+}
+
+.sciconnect-empty-state p {
+  margin: 0 0 16px 0;
+  font-size: 0.95rem;
+}
+
+/* SciConnect Custom Navigation Styles */
+.sciconnect-nav {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  padding: 16px 12px;
+  gap: 16px;
+  background: var(--theme-elevation-50, var(--theme-elevation-0));
+  border-right: 1px solid var(--theme-elevation-150, var(--theme-elevation-100));
+
+  &__header {
+    padding: 52px 12px 16px 12px;
+    border-bottom: 1px solid var(--theme-elevation-150);
+  }
+
+  &__logo-link {
+    text-decoration: none;
+    display: inline-block;
+  }
+
+  &__group {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  &__group-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding: 8px 12px;
+    background: transparent;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    color: var(--theme-elevation-600);
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    transition: background-color 0.15s ease, color 0.15s ease;
+
+    &:hover {
+      background: var(--theme-elevation-100);
+      color: var(--theme-elevation-900);
+    }
+  }
+
+  &__group-title {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  &__group-arrow {
+    display: flex;
+    align-items: center;
+    transition: transform 0.2s ease;
+
+    &--expanded {
+      transform: rotate(180deg);
+    }
+  }
+
+  &__group-items {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding-left: 12px;
+  }
+
+  &__item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: var(--theme-elevation-700);
+    text-decoration: none;
+    transition: background-color 0.15s ease, color 0.15s ease;
+
+    &:hover {
+      background: var(--theme-elevation-100);
+      color: var(--theme-elevation-1000);
+    }
+
+    &--active {
+      background: var(--theme-elevation-150, rgba(16, 185, 129, 0.1));
+      color: var(--theme-success-500, #10b981);
+      font-weight: 600;
+
+      .sciconnect-nav__icon {
+        color: var(--theme-success-500, #10b981);
+      }
+    }
+
+    &--logout {
+      color: var(--theme-error-500, #ef4444);
+
+      &:hover {
+        background: rgba(239, 68, 68, 0.1);
+        color: var(--theme-error-500, #ef4444);
+      }
+    }
+  }
+
+  &__icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--theme-elevation-500);
+  }
+
+  &__label {
+    flex: 1;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  &__footer {
+    margin-top: auto;
+    padding-top: 16px;
+    border-top: 1px solid var(--theme-elevation-150);
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+}
+
+/* SciConnectWorld Article Content Lexical Editor - Height & Background Fix */
+div[data-field-path="content"],
+div[data-field-schemapath="content"],
+.field-type.rich-text-lexical[data-field-path="content"] {
+  .editor-container {
+    background-color: #222222 !important;
+    border: 1px solid var(--theme-elevation-200, #333333) !important;
+    border-radius: 6px !important;
+    min-height: 450px !important;
+    display: flex !important;
+    flex-direction: column !important;
+  }
+
+  .editor-scroller {
+    min-height: 400px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    flex: 1 !important;
+  }
+
+  .editor {
+    min-height: 400px !important;
+    display: flex !important;
+    flex-direction: column !important;
+    flex: 1 !important;
+  }
+
+  .ContentEditable__root,
+  [contenteditable="true"] {
+    min-height: 380px !important;
+    padding: 16px !important;
+    background-color: #222222 !important;
+    color: var(--theme-elevation-1000, #ffffff) !important;
+    outline: none !important;
+    flex: 1 !important;
+  }
+}
+
+/* ==========================================================================
+   SCICONNECT TAG MANAGER & BULK CREATE STYLES
+   ========================================================================== */
+
+.sciconnect-tags-manager,
+.sciconnect-bulk-tags {
+  padding: 24px;
+  max-width: 1200px;
+  margin: 0 auto;
+  color: var(--theme-elevation-800, #e2e8f0);
+
+  &__header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 16px;
+    margin-bottom: 24px;
+  }
+
+  &__title {
+    font-size: 24px;
+    font-weight: 700;
+    margin: 0 0 6px 0;
+    color: var(--theme-elevation-1000, #ffffff);
+  }
+
+  &__subtitle {
+    font-size: 14px;
+    color: var(--theme-elevation-400, #94a3b8);
+    margin: 0;
+  }
+
+  &__search-bar {
+    margin-bottom: 24px;
+  }
+
+  &__search-input-wrap {
+    position: relative;
+    max-width: 480px;
+  }
+
+  &__search-icon {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 18px;
+    height: 18px;
+    color: var(--theme-elevation-400, #94a3b8);
+    pointer-events: none;
+  }
+
+  &__search-input {
+    width: 100%;
+    padding: 10px 36px;
+    border-radius: 6px;
+    border: 1px solid var(--theme-elevation-150, #334155);
+    background-color: var(--theme-input-bg, #1e293b);
+    color: var(--theme-elevation-1000, #ffffff);
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.15s ease;
+
+    &:focus {
+      border-color: var(--theme-elevation-400, #64748b);
+    }
+  }
+
+  &__search-clear {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    color: var(--theme-elevation-400, #94a3b8);
+    font-size: 18px;
+    cursor: pointer;
+    line-height: 1;
+
+    &:hover {
+      color: var(--theme-elevation-800, #ffffff);
+    }
+  }
+
+  &__loading,
+  &__empty {
+    padding: 48px 16px;
+    text-align: center;
+    color: var(--theme-elevation-400, #94a3b8);
+  }
+
+  &__empty-title {
+    font-size: 16px;
+    font-weight: 600;
+    margin-bottom: 4px;
+  }
+
+  &__empty-desc {
+    font-size: 14px;
+    margin: 0;
+  }
+
+  &__load-more {
+    margin-top: 32px;
+    text-align: center;
+  }
+}
+
+/* Tag Cloud & Chips */
+.sciconnect-tag-cloud {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+}
+
+.sciconnect-tag-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  border-radius: 20px;
+  background-color: var(--theme-elevation-100, #1e293b);
+  border: 1px solid var(--theme-elevation-200, #334155);
+  color: var(--theme-elevation-800, #f8fafc);
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 1.3;
+  transition: all 0.15s ease;
+  max-width: 100%;
+
+  &:hover {
+    background-color: var(--theme-elevation-150, #334155);
+    border-color: var(--theme-elevation-300, #475569);
+  }
+
+  &--exists {
+    background-color: var(--theme-error-50, rgba(239, 68, 68, 0.1));
+    border-color: var(--theme-error-300, #f87171);
+    color: var(--theme-error-600, #ef4444);
+  }
+
+  &__name {
+    background: none;
+    border: none;
+    color: inherit;
+    font: inherit;
+    padding: 0;
+    cursor: pointer;
+    text-align: left;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-width: 280px;
+
+    &:hover {
+      text-decoration: underline;
+    }
+  }
+
+  &__delete {
+    background: none;
+    border: none;
+    color: var(--theme-elevation-400, #94a3b8);
+    font-size: 16px;
+    cursor: pointer;
+    line-height: 1;
+    padding: 0 2px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    transition: color 0.15s ease;
+
+    &:hover {
+      color: var(--theme-error-500, #ef4444);
+    }
+  }
+
+  &__badge {
+    font-size: 11px;
+    margin-left: 6px;
+    padding: 1px 6px;
+    border-radius: 10px;
+    background-color: var(--theme-error-100, rgba(239, 68, 68, 0.2));
+    color: var(--theme-error-600, #ef4444);
+    font-weight: 600;
+  }
+}
+
+/* Bulk Create Tags */
+.sciconnect-bulk-tags {
+  &__card {
+    background-color: var(--theme-elevation-50, #0f172a);
+    border: 1px solid var(--theme-elevation-150, #1e293b);
+    border-radius: 8px;
+    padding: 24px;
+  }
+
+  &__input-label {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: var(--theme-elevation-600, #cbd5e1);
+  }
+
+  &__input {
+    width: 100%;
+    padding: 12px 16px;
+    font-size: 15px;
+    border-radius: 6px;
+    border: 1px solid var(--theme-elevation-200, #334155);
+    background-color: var(--theme-input-bg, #1e293b);
+    color: var(--theme-elevation-1000, #ffffff);
+    outline: none;
+
+    &:focus {
+      border-color: var(--theme-elevation-400, #64748b);
+    }
+  }
+
+  &__pending-section {
+    margin-top: 24px;
+    padding-top: 20px;
+    border-top: 1px solid var(--theme-elevation-150, #1e293b);
+  }
+
+  &__pending-title {
+    font-size: 14px;
+    font-weight: 600;
+    margin: 0 0 16px 0;
+    color: var(--theme-elevation-700, #e2e8f0);
+  }
+
+  &__empty-box {
+    padding: 36px 16px;
+    text-align: center;
+    border: 1px dashed var(--theme-elevation-200, #334155);
+    border-radius: 6px;
+    color: var(--theme-elevation-400, #94a3b8);
+    font-size: 14px;
+  }
+}
+
+/* Modals */
+.sciconnect-modal-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  background-color: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(4px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+}
+
+.sciconnect-modal {
+  background-color: var(--theme-bg, #0f172a);
+  border: 1px solid var(--theme-elevation-200, #334155);
+  border-radius: 8px;
+  width: 100%;
+  max-width: 480px;
+  box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.5);
+  overflow: hidden;
+
+  &__header {
+    padding: 16px 20px;
+    border-bottom: 1px solid var(--theme-elevation-150, #1e293b);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    h3 {
+      font-size: 18px;
+      font-weight: 600;
+      margin: 0;
+      color: var(--theme-elevation-1000, #ffffff);
+    }
+  }
+
+  &__close-btn {
+    background: none;
+    border: none;
+    font-size: 24px;
+    color: var(--theme-elevation-400, #94a3b8);
+    cursor: pointer;
+    line-height: 1;
+
+    &:hover {
+      color: var(--theme-elevation-800, #ffffff);
+    }
+  }
+
+  &__body {
+    padding: 20px;
+    color: var(--theme-elevation-800, #e2e8f0);
+    font-size: 14px;
+  }
+
+  &__error-box {
+    margin-bottom: 16px;
+    padding: 10px 12px;
+    border-radius: 6px;
+    background-color: rgba(239, 68, 68, 0.1);
+    border: 1px solid var(--theme-error-400, #f87171);
+    color: var(--theme-error-600, #ef4444);
+    font-size: 13px;
+  }
+
+  &__footer {
+    padding: 16px 20px;
+    border-top: 1px solid var(--theme-elevation-150, #1e293b);
+    display: flex;
+    justify-content: flex-end;
+    gap: 8px;
+    background-color: var(--theme-elevation-50, #0f172a);
+  }
+}
+
+.sciconnect-form-group {
+  margin-bottom: 16px;
+
+  label {
+    display: block;
+    font-size: 13px;
+    font-weight: 500;
+    margin-bottom: 6px;
+    color: var(--theme-elevation-700, #e2e8f0);
+  }
+}
+
+.sciconnect-input,
+.sciconnect-textarea,
+.sciconnect-select {
+  width: 100%;
+  padding: 8px 12px;
+  border-radius: 6px;
+  border: 1px solid var(--theme-elevation-200, #334155);
+  background-color: var(--theme-input-bg, #1e293b);
+  color: var(--theme-elevation-1000, #ffffff);
+  font-size: 14px;
+  outline: none;
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+.sciconnect-btn--danger {
+  background-color: var(--theme-error-600, #dc2626) !important;
+  color: #ffffff !important;
+
+  &:hover {
+    background-color: var(--theme-error-700, #b91c1c) !important;
+  }
+}
+
+.sciconnect-summary-list {
+  margin: 8px 0 0 0;
+  padding-left: 18px;
+  font-size: 13px;
+  color: var(--theme-elevation-600, #cbd5e1);
+
+  li {
+    margin-bottom: 4px;
+  }
+}
+

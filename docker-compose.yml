@@ -1,43 +1,27 @@
-version: '3'
+version: '3.8'
 
 services:
-  payload:
-    image: node:20-alpine
+  sciconnect-cms:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    image: sciconnect-cms:latest
+    container_name: sciconnect-cms
+    restart: unless-stopped
     ports:
-      - '3000:3000'
-    volumes:
-      - .:/home/node/app
-      - node_modules:/home/node/app/node_modules
-    working_dir: /home/node/app/
-    command: sh -c "corepack enable && corepack prepare pnpm@latest --activate && pnpm install && pnpm dev"
-    depends_on:
-      - mongo
-      # - postgres
+      # Bind CMS to port 4000 strictly on localhost for proxying/security
+      - '127.0.0.1:4000:3000'
     env_file:
-      - .env
-
-  # Ensure your DATABASE_URL uses 'mongo' as the hostname ie. mongodb://mongo/my-db-name
-  mongo:
-    image: mongo:latest
-    ports:
-      - '27017:27017'
-    command:
-      - --storageEngine=wiredTiger
+      - .env.production
+    networks:
+      - foodrestro-network
     volumes:
-      - data:/data/db
-    logging:
-      driver: none
+      # Persist uploaded media files
+      - media_data:/app/public/media
 
-  # Uncomment the following to use postgres
-  # postgres:
-  #   restart: always
-  #   image: postgres:latest
-  #   volumes:
-  #     - pgdata:/var/lib/postgresql/data
-  #   ports:
-  #     - "5432:5432"
+networks:
+  foodrestro-network:
+    external: true
 
 volumes:
-  data:
-  # pgdata:
-  node_modules:
+  media_data:

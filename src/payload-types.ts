@@ -68,8 +68,19 @@ export interface Config {
   blocks: {};
   collections: {
     users: User;
+    authors: Author;
     media: Media;
+    categories: Category;
+    tags: Tag;
+    articles: Article;
+    menus: Menu;
+    'menu-items': MenuItem;
+    subscribers: Subscriber;
+    'newsletter-deliveries': NewsletterDelivery;
+    'email-templates': EmailTemplate;
+    comments: Comment;
     'payload-kv': PayloadKv;
+    'payload-jobs': PayloadJob;
     'payload-locked-documents': PayloadLockedDocument;
     'payload-preferences': PayloadPreference;
     'payload-migrations': PayloadMigration;
@@ -77,25 +88,53 @@ export interface Config {
   collectionsJoins: {};
   collectionsSelect: {
     users: UsersSelect<false> | UsersSelect<true>;
+    authors: AuthorsSelect<false> | AuthorsSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
+    categories: CategoriesSelect<false> | CategoriesSelect<true>;
+    tags: TagsSelect<false> | TagsSelect<true>;
+    articles: ArticlesSelect<false> | ArticlesSelect<true>;
+    menus: MenusSelect<false> | MenusSelect<true>;
+    'menu-items': MenuItemsSelect<false> | MenuItemsSelect<true>;
+    subscribers: SubscribersSelect<false> | SubscribersSelect<true>;
+    'newsletter-deliveries': NewsletterDeliveriesSelect<false> | NewsletterDeliveriesSelect<true>;
+    'email-templates': EmailTemplatesSelect<false> | EmailTemplatesSelect<true>;
+    comments: CommentsSelect<false> | CommentsSelect<true>;
     'payload-kv': PayloadKvSelect<false> | PayloadKvSelect<true>;
+    'payload-jobs': PayloadJobsSelect<false> | PayloadJobsSelect<true>;
     'payload-locked-documents': PayloadLockedDocumentsSelect<false> | PayloadLockedDocumentsSelect<true>;
     'payload-preferences': PayloadPreferencesSelect<false> | PayloadPreferencesSelect<true>;
     'payload-migrations': PayloadMigrationsSelect<false> | PayloadMigrationsSelect<true>;
   };
   db: {
-    defaultIDType: string;
+    defaultIDType: number;
   };
   fallbackLocale: null;
-  globals: {};
-  globalsSelect: {};
+  globals: {
+    'site-settings': SiteSetting;
+    'hero-settings': HeroSetting;
+    'email-settings': EmailSetting;
+  };
+  globalsSelect: {
+    'site-settings': SiteSettingsSelect<false> | SiteSettingsSelect<true>;
+    'hero-settings': HeroSettingsSelect<false> | HeroSettingsSelect<true>;
+    'email-settings': EmailSettingsSelect<false> | EmailSettingsSelect<true>;
+  };
   locale: null;
   widgets: {
     collections: CollectionsWidget;
   };
   user: User;
   jobs: {
-    tasks: unknown;
+    tasks: {
+      createNewsletterCampaign: TaskCreateNewsletterCampaign;
+      sendNewsletterEmail: TaskSendNewsletterEmail;
+      sendVerificationEmail: TaskSendVerificationEmail;
+      sendCommentReplyEmail: TaskSendCommentReplyEmail;
+      inline: {
+        input: unknown;
+        output: unknown;
+      };
+    };
     workflows: unknown;
   };
 }
@@ -122,7 +161,12 @@ export interface UserAuthOperations {
  * via the `definition` "users".
  */
 export interface User {
-  id: string;
+  id: number;
+  name: string;
+  role: 'super_admin' | 'admin' | 'editor';
+  status: 'active' | 'inactive' | 'suspended';
+  avatar?: (number | null) | Media;
+  lastLoginAt?: string | null;
   updatedAt: string;
   createdAt: string;
   email: string;
@@ -147,7 +191,7 @@ export interface User {
  * via the `definition` "media".
  */
 export interface Media {
-  id: string;
+  id: number;
   alt: string;
   updatedAt: string;
   createdAt: string;
@@ -163,10 +207,265 @@ export interface Media {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "authors".
+ */
+export interface Author {
+  id: number;
+  name: string;
+  slug?: string | null;
+  avatar?: (number | null) | Media;
+  bio?: string | null;
+  designation?: string | null;
+  status: 'active' | 'inactive';
+  social?: {
+    facebook?: string | null;
+    instagram?: string | null;
+    x?: string | null;
+    linkedin?: string | null;
+    youtube?: string | null;
+    website?: string | null;
+  };
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "categories".
+ */
+export interface Category {
+  id: number;
+  name: string;
+  slug?: string | null;
+  description?: string | null;
+  /**
+   * Showcase this category on the homepage
+   */
+  isFeatured?: boolean | null;
+  /**
+   * Select an icon to display with this item
+   */
+  icon?: string | null;
+  parent?: (number | null) | Category;
+  status: 'active' | 'inactive';
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "tags".
+ */
+export interface Tag {
+  id: number;
+  name: string;
+  description?: string | null;
+  slug?: string | null;
+  status: 'active' | 'inactive';
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "articles".
+ */
+export interface Article {
+  id: number;
+  contentType: 'article' | 'video';
+  title?: string | null;
+  excerpt?: string | null;
+  content?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  video?: {
+    videoProvider?: 'youtube' | null;
+    youtubeUrl?: string | null;
+    youtubeVideoId?: string | null;
+    /**
+     * Leave blank to use the article title.
+     */
+    videoTitle?: string | null;
+    /**
+     * Leave blank to use the article excerpt.
+     */
+    videoDescription?: string | null;
+    /**
+     * Format: MM:SS or HH:MM:SS (e.g., 15:33). Used for video SEO.
+     */
+    duration?: string | null;
+  };
+  transcript?: {
+    root: {
+      type: string;
+      children: {
+        type: any;
+        version: number;
+        [k: string]: unknown;
+      }[];
+      direction: ('ltr' | 'rtl') | null;
+      format: 'left' | 'start' | 'center' | 'right' | 'end' | 'justify' | '';
+      indent: number;
+      version: number;
+    };
+    [k: string]: unknown;
+  } | null;
+  featuredImage?: (number | null) | Media;
+  isFeatured?: boolean | null;
+  publishedAt?: string | null;
+  author?: (number | null) | Author;
+  categories?: (number | Category)[] | null;
+  tags?: (number | Tag)[] | null;
+  slug?: string | null;
+  seo?: {
+    metaTitle?: string | null;
+    metaDescription?: string | null;
+    ogImage?: (number | null) | Media;
+    canonicalUrl?: string | null;
+    noIndex?: boolean | null;
+  };
+  updatedAt: string;
+  createdAt: string;
+  _status?: ('draft' | 'published') | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "menus".
+ */
+export interface Menu {
+  id: number;
+  name: string;
+  slug?: string | null;
+  description?: string | null;
+  locations?: ('header' | 'footer')[] | null;
+  status: 'active' | 'inactive';
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "menu-items".
+ */
+export interface MenuItem {
+  id: number;
+  label: string;
+  menu: number | Menu;
+  parent?: (number | null) | MenuItem;
+  order: number;
+  status: 'active' | 'inactive';
+  linkType: 'internal' | 'external';
+  openInNewTab?: boolean | null;
+  internalType?: ('article' | 'category' | 'custom') | null;
+  article?: (number | null) | Article;
+  category?: (number | null) | Category;
+  /**
+   * Example: /about, /search
+   */
+  customPath?: string | null;
+  /**
+   * Must include http:// or https://
+   */
+  externalUrl?: string | null;
+  /**
+   * Optional CSS class for custom styling
+   */
+  cssClass?: string | null;
+  /**
+   * Optional icon identifier (e.g., "home", "search")
+   */
+  icon?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "subscribers".
+ */
+export interface Subscriber {
+  id: number;
+  /**
+   * Subscriber email address
+   */
+  email: string;
+  status: 'pending' | 'active' | 'unsubscribed' | 'bounced' | 'blocked';
+  /**
+   * Do not edit directly. Automatically generated hash.
+   */
+  verificationTokenHash?: string | null;
+  verificationTokenExpiresAt?: string | null;
+  unsubscribeTokenHash?: string | null;
+  source?: string | null;
+  verifiedAt?: string | null;
+  unsubscribedAt?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "newsletter-deliveries".
+ */
+export interface NewsletterDelivery {
+  id: number;
+  subscriber: number | Subscriber;
+  article?: (number | null) | Article;
+  email: string;
+  template: number | EmailTemplate;
+  status: 'queued' | 'sending' | 'sent' | 'failed' | 'skipped';
+  errorMessage?: string | null;
+  attemptCount?: number | null;
+  providerMessageId?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "email-templates".
+ */
+export interface EmailTemplate {
+  id: number;
+  name: string;
+  slug: string;
+  type: 'subscriptionVerification' | 'welcome' | 'newArticle' | 'unsubscribeConfirmation' | 'commentReply';
+  enabled?: boolean | null;
+  subject: string;
+  htmlBody: string;
+  textBody?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "comments".
+ */
+export interface Comment {
+  id: number;
+  article: number | Article;
+  parentComment?: (number | null) | Comment;
+  name: string;
+  email: string;
+  content: string;
+  status?: ('pending' | 'approved' | 'rejected' | 'spam' | 'deleted') | null;
+  authorType?: ('reader' | 'author' | 'admin') | null;
+  avatarUrl?: string | null;
+  initials?: string | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv".
  */
 export interface PayloadKv {
-  id: string;
+  id: number;
   key: string;
   data:
     | {
@@ -180,23 +479,168 @@ export interface PayloadKv {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "payload-jobs".
+ */
+export interface PayloadJob {
+  id: number;
+  /**
+   * Input data provided to the job
+   */
+  input?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  taskStatus?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  completedAt?: string | null;
+  totalTried?: number | null;
+  /**
+   * If hasError is true this job will not be retried
+   */
+  hasError?: boolean | null;
+  /**
+   * If hasError is true, this is the error that caused it
+   */
+  error?:
+    | {
+        [k: string]: unknown;
+      }
+    | unknown[]
+    | string
+    | number
+    | boolean
+    | null;
+  /**
+   * Task execution log
+   */
+  log?:
+    | {
+        executedAt: string;
+        completedAt: string;
+        taskSlug:
+          | 'inline'
+          | 'createNewsletterCampaign'
+          | 'sendNewsletterEmail'
+          | 'sendVerificationEmail'
+          | 'sendCommentReplyEmail';
+        taskID: string;
+        input?:
+          | {
+              [k: string]: unknown;
+            }
+          | unknown[]
+          | string
+          | number
+          | boolean
+          | null;
+        output?:
+          | {
+              [k: string]: unknown;
+            }
+          | unknown[]
+          | string
+          | number
+          | boolean
+          | null;
+        state: 'failed' | 'succeeded';
+        error?:
+          | {
+              [k: string]: unknown;
+            }
+          | unknown[]
+          | string
+          | number
+          | boolean
+          | null;
+        id?: string | null;
+      }[]
+    | null;
+  taskSlug?:
+    | (
+        | 'inline'
+        | 'createNewsletterCampaign'
+        | 'sendNewsletterEmail'
+        | 'sendVerificationEmail'
+        | 'sendCommentReplyEmail'
+      )
+    | null;
+  queue?: string | null;
+  waitUntil?: string | null;
+  processing?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-locked-documents".
  */
 export interface PayloadLockedDocument {
-  id: string;
+  id: number;
   document?:
     | ({
         relationTo: 'users';
-        value: string | User;
+        value: number | User;
+      } | null)
+    | ({
+        relationTo: 'authors';
+        value: number | Author;
       } | null)
     | ({
         relationTo: 'media';
-        value: string | Media;
+        value: number | Media;
+      } | null)
+    | ({
+        relationTo: 'categories';
+        value: number | Category;
+      } | null)
+    | ({
+        relationTo: 'tags';
+        value: number | Tag;
+      } | null)
+    | ({
+        relationTo: 'articles';
+        value: number | Article;
+      } | null)
+    | ({
+        relationTo: 'menus';
+        value: number | Menu;
+      } | null)
+    | ({
+        relationTo: 'menu-items';
+        value: number | MenuItem;
+      } | null)
+    | ({
+        relationTo: 'subscribers';
+        value: number | Subscriber;
+      } | null)
+    | ({
+        relationTo: 'newsletter-deliveries';
+        value: number | NewsletterDelivery;
+      } | null)
+    | ({
+        relationTo: 'email-templates';
+        value: number | EmailTemplate;
+      } | null)
+    | ({
+        relationTo: 'comments';
+        value: number | Comment;
       } | null);
   globalSlug?: string | null;
   user: {
     relationTo: 'users';
-    value: string | User;
+    value: number | User;
   };
   updatedAt: string;
   createdAt: string;
@@ -206,10 +650,10 @@ export interface PayloadLockedDocument {
  * via the `definition` "payload-preferences".
  */
 export interface PayloadPreference {
-  id: string;
+  id: number;
   user: {
     relationTo: 'users';
-    value: string | User;
+    value: number | User;
   };
   key?: string | null;
   value?:
@@ -229,7 +673,7 @@ export interface PayloadPreference {
  * via the `definition` "payload-migrations".
  */
 export interface PayloadMigration {
-  id: string;
+  id: number;
   name?: string | null;
   batch?: number | null;
   updatedAt: string;
@@ -240,6 +684,11 @@ export interface PayloadMigration {
  * via the `definition` "users_select".
  */
 export interface UsersSelect<T extends boolean = true> {
+  name?: T;
+  role?: T;
+  status?: T;
+  avatar?: T;
+  lastLoginAt?: T;
   updatedAt?: T;
   createdAt?: T;
   email?: T;
@@ -256,6 +705,30 @@ export interface UsersSelect<T extends boolean = true> {
         createdAt?: T;
         expiresAt?: T;
       };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "authors_select".
+ */
+export interface AuthorsSelect<T extends boolean = true> {
+  name?: T;
+  slug?: T;
+  avatar?: T;
+  bio?: T;
+  designation?: T;
+  status?: T;
+  social?:
+    | T
+    | {
+        facebook?: T;
+        instagram?: T;
+        x?: T;
+        linkedin?: T;
+        youtube?: T;
+        website?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -277,11 +750,208 @@ export interface MediaSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "categories_select".
+ */
+export interface CategoriesSelect<T extends boolean = true> {
+  name?: T;
+  slug?: T;
+  description?: T;
+  isFeatured?: T;
+  icon?: T;
+  parent?: T;
+  status?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "tags_select".
+ */
+export interface TagsSelect<T extends boolean = true> {
+  name?: T;
+  description?: T;
+  slug?: T;
+  status?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "articles_select".
+ */
+export interface ArticlesSelect<T extends boolean = true> {
+  contentType?: T;
+  title?: T;
+  excerpt?: T;
+  content?: T;
+  video?:
+    | T
+    | {
+        videoProvider?: T;
+        youtubeUrl?: T;
+        youtubeVideoId?: T;
+        videoTitle?: T;
+        videoDescription?: T;
+        duration?: T;
+      };
+  transcript?: T;
+  featuredImage?: T;
+  isFeatured?: T;
+  publishedAt?: T;
+  author?: T;
+  categories?: T;
+  tags?: T;
+  slug?: T;
+  seo?:
+    | T
+    | {
+        metaTitle?: T;
+        metaDescription?: T;
+        ogImage?: T;
+        canonicalUrl?: T;
+        noIndex?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  _status?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "menus_select".
+ */
+export interface MenusSelect<T extends boolean = true> {
+  name?: T;
+  slug?: T;
+  description?: T;
+  locations?: T;
+  status?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "menu-items_select".
+ */
+export interface MenuItemsSelect<T extends boolean = true> {
+  label?: T;
+  menu?: T;
+  parent?: T;
+  order?: T;
+  status?: T;
+  linkType?: T;
+  openInNewTab?: T;
+  internalType?: T;
+  article?: T;
+  category?: T;
+  customPath?: T;
+  externalUrl?: T;
+  cssClass?: T;
+  icon?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "subscribers_select".
+ */
+export interface SubscribersSelect<T extends boolean = true> {
+  email?: T;
+  status?: T;
+  verificationTokenHash?: T;
+  verificationTokenExpiresAt?: T;
+  unsubscribeTokenHash?: T;
+  source?: T;
+  verifiedAt?: T;
+  unsubscribedAt?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "newsletter-deliveries_select".
+ */
+export interface NewsletterDeliveriesSelect<T extends boolean = true> {
+  subscriber?: T;
+  article?: T;
+  email?: T;
+  template?: T;
+  status?: T;
+  errorMessage?: T;
+  attemptCount?: T;
+  providerMessageId?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "email-templates_select".
+ */
+export interface EmailTemplatesSelect<T extends boolean = true> {
+  name?: T;
+  slug?: T;
+  type?: T;
+  enabled?: T;
+  subject?: T;
+  htmlBody?: T;
+  textBody?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "comments_select".
+ */
+export interface CommentsSelect<T extends boolean = true> {
+  article?: T;
+  parentComment?: T;
+  name?: T;
+  email?: T;
+  content?: T;
+  status?: T;
+  authorType?: T;
+  avatarUrl?: T;
+  initials?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "payload-kv_select".
  */
 export interface PayloadKvSelect<T extends boolean = true> {
   key?: T;
   data?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "payload-jobs_select".
+ */
+export interface PayloadJobsSelect<T extends boolean = true> {
+  input?: T;
+  taskStatus?: T;
+  completedAt?: T;
+  totalTried?: T;
+  hasError?: T;
+  error?: T;
+  log?:
+    | T
+    | {
+        executedAt?: T;
+        completedAt?: T;
+        taskSlug?: T;
+        taskID?: T;
+        input?: T;
+        output?: T;
+        state?: T;
+        error?: T;
+        id?: T;
+      };
+  taskSlug?: T;
+  queue?: T;
+  waitUntil?: T;
+  processing?: T;
+  updatedAt?: T;
+  createdAt?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -317,6 +987,278 @@ export interface PayloadMigrationsSelect<T extends boolean = true> {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "site-settings".
+ */
+export interface SiteSetting {
+  id: number;
+  siteName: string;
+  siteDescription?: string | null;
+  logo?: (number | null) | Media;
+  favicon?: (number | null) | Media;
+  brandDisplay?: ('logo-text' | 'logo-only' | 'text-only') | null;
+  brandLogoHeight?: number | null;
+  brandTextSize?: number | null;
+  headerMenu?: (number | null) | Menu;
+  headerLayout?: ('default' | 'centered' | 'minimal' | 'minimal-cta' | 'compact') | null;
+  mobileNavigation?: {
+    enabled?: boolean | null;
+    /**
+     * Choose a different menu specifically for mobile. If empty, the Header Menu will be used.
+     */
+    mobileMenu?: (number | null) | Menu;
+    layout?: ('drawer-left' | 'drawer-right' | 'fullscreen' | 'dropdown') | null;
+    closeAfterNavigation?: boolean | null;
+    closeOnOutsideClick?: boolean | null;
+    closeOnEscape?: boolean | null;
+    lockBodyScroll?: boolean | null;
+  };
+  mobileHeader?: {
+    style?: ('standard' | 'centered' | 'logo-search' | 'minimal') | null;
+    triggerStyle?: ('hamburger' | 'menu-text' | 'circle' | 'square') | null;
+    showSearch?: boolean | null;
+    showSubscribe?: boolean | null;
+    showLogo?: boolean | null;
+    showMenuLabel?: boolean | null;
+  };
+  footerMenu?: (number | null) | Menu;
+  footerLayout?: ('default' | 'multi-column' | 'compact' | 'minimal') | null;
+  footerBrandDisplay?: ('logo-text' | 'logo-only' | 'text-only') | null;
+  footerBrandLogoHeight?: number | null;
+  footerBrandTextSize?: number | null;
+  socialLinks?:
+    | {
+        platform: 'facebook' | 'twitter' | 'instagram' | 'linkedin' | 'youtube' | 'whatsapp' | 'github';
+        url: string;
+        id?: string | null;
+      }[]
+    | null;
+  primaryColor?: string | null;
+  secondaryColor?: string | null;
+  accentColor?: string | null;
+  backgroundColor?: string | null;
+  textColor?: string | null;
+  maintenanceEnabled?: boolean | null;
+  maintenanceTitle?: string | null;
+  maintenanceMessage?: string | null;
+  /**
+   * Maximum 60 characters.
+   */
+  metaTitle?: string | null;
+  /**
+   * Maximum 160 characters.
+   */
+  metaDescription?: string | null;
+  siteUrl: string;
+  /**
+   * Defaults to Meta Title if left blank.
+   */
+  ogTitle?: string | null;
+  /**
+   * Defaults to Meta Description if left blank.
+   */
+  ogDescription?: string | null;
+  ogImage?: (number | null) | Media;
+  canonicalUrl?: string | null;
+  /**
+   * Check to prevent search engines from indexing the site by default.
+   */
+  noIndex?: boolean | null;
+  googleAnalyticsEnabled?: boolean | null;
+  /**
+   * Format: G-XXXXXXXXXX
+   */
+  ga4Id?: string | null;
+  googleTagManagerEnabled?: boolean | null;
+  /**
+   * Format: GTM-XXXXXXX
+   */
+  gtmId?: string | null;
+  enableAnalyticsApp?: boolean | null;
+  /**
+   * Create or open your Looker Studio report, choose Embed report, and paste the generated Embed URL here.
+   */
+  lookerStudioEmbedUrl?: string | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "hero-settings".
+ */
+export interface HeroSetting {
+  id: number;
+  enableHero?: boolean | null;
+  heroLayout?: ('default' | 'full-image' | 'centered' | 'slider') | null;
+  eyebrow?: string | null;
+  title: string;
+  description?: string | null;
+  primaryCTA?: {
+    enabled?: boolean | null;
+    openInNewTab?: boolean | null;
+    label?: string | null;
+    url?: string | null;
+  };
+  secondaryCTA?: {
+    enabled?: boolean | null;
+    openInNewTab?: boolean | null;
+    label?: string | null;
+    url?: string | null;
+  };
+  heroImage?: (number | null) | Media;
+  /**
+   * Maximum 5 images
+   */
+  heroGallery?:
+    | {
+        image: number | Media;
+        alt?: string | null;
+        id?: string | null;
+      }[]
+    | null;
+  featuredArticle?: (number | null) | Article;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "email-settings".
+ */
+export interface EmailSetting {
+  id: number;
+  enableEmailSending?: boolean | null;
+  fromName: string;
+  fromEmail: string;
+  replyTo?: string | null;
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "site-settings_select".
+ */
+export interface SiteSettingsSelect<T extends boolean = true> {
+  siteName?: T;
+  siteDescription?: T;
+  logo?: T;
+  favicon?: T;
+  brandDisplay?: T;
+  brandLogoHeight?: T;
+  brandTextSize?: T;
+  headerMenu?: T;
+  headerLayout?: T;
+  mobileNavigation?:
+    | T
+    | {
+        enabled?: T;
+        mobileMenu?: T;
+        layout?: T;
+        closeAfterNavigation?: T;
+        closeOnOutsideClick?: T;
+        closeOnEscape?: T;
+        lockBodyScroll?: T;
+      };
+  mobileHeader?:
+    | T
+    | {
+        style?: T;
+        triggerStyle?: T;
+        showSearch?: T;
+        showSubscribe?: T;
+        showLogo?: T;
+        showMenuLabel?: T;
+      };
+  footerMenu?: T;
+  footerLayout?: T;
+  footerBrandDisplay?: T;
+  footerBrandLogoHeight?: T;
+  footerBrandTextSize?: T;
+  socialLinks?:
+    | T
+    | {
+        platform?: T;
+        url?: T;
+        id?: T;
+      };
+  primaryColor?: T;
+  secondaryColor?: T;
+  accentColor?: T;
+  backgroundColor?: T;
+  textColor?: T;
+  maintenanceEnabled?: T;
+  maintenanceTitle?: T;
+  maintenanceMessage?: T;
+  metaTitle?: T;
+  metaDescription?: T;
+  siteUrl?: T;
+  ogTitle?: T;
+  ogDescription?: T;
+  ogImage?: T;
+  canonicalUrl?: T;
+  noIndex?: T;
+  googleAnalyticsEnabled?: T;
+  ga4Id?: T;
+  googleTagManagerEnabled?: T;
+  gtmId?: T;
+  enableAnalyticsApp?: T;
+  lookerStudioEmbedUrl?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "hero-settings_select".
+ */
+export interface HeroSettingsSelect<T extends boolean = true> {
+  enableHero?: T;
+  heroLayout?: T;
+  eyebrow?: T;
+  title?: T;
+  description?: T;
+  primaryCTA?:
+    | T
+    | {
+        enabled?: T;
+        openInNewTab?: T;
+        label?: T;
+        url?: T;
+      };
+  secondaryCTA?:
+    | T
+    | {
+        enabled?: T;
+        openInNewTab?: T;
+        label?: T;
+        url?: T;
+      };
+  heroImage?: T;
+  heroGallery?:
+    | T
+    | {
+        image?: T;
+        alt?: T;
+        id?: T;
+      };
+  featuredArticle?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "email-settings_select".
+ */
+export interface EmailSettingsSelect<T extends boolean = true> {
+  enableEmailSending?: T;
+  fromName?: T;
+  fromEmail?: T;
+  replyTo?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "collections_widget".
  */
 export interface CollectionsWidget {
@@ -324,6 +1266,45 @@ export interface CollectionsWidget {
     [k: string]: unknown;
   };
   width: 'full';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TaskCreateNewsletterCampaign".
+ */
+export interface TaskCreateNewsletterCampaign {
+  input: {
+    articleId: string;
+  };
+  output?: unknown;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TaskSendNewsletterEmail".
+ */
+export interface TaskSendNewsletterEmail {
+  input: {
+    deliveryId: string;
+  };
+  output?: unknown;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TaskSendVerificationEmail".
+ */
+export interface TaskSendVerificationEmail {
+  input: {
+    subscriberId: string;
+    rawVerificationToken: string;
+  };
+  output?: unknown;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "TaskSendCommentReplyEmail".
+ */
+export interface TaskSendCommentReplyEmail {
+  input?: unknown;
+  output?: unknown;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
