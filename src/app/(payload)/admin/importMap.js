@@ -41,6 +41,7 @@ import { default as default_aaa3ca94f8d6009ef85ca9e93daa3f2a } from '@/component
 import { default as default_145f52386bb5872e94db93031c3734ca } from '../../../components/admin/navigation/CustomNav'
 import { default as default_dfe4008080d895d460898c3a6155e9ba } from '../../../components/admin/Icon'
 import { default as default_91a09b539d3c86b0aebf520e7564ce08 } from '../../../components/admin/Logo'
+import { PWASetup as PWASetup_70340a21dcb353c766c8d4fccf7ebed6 } from '../../../components/admin/PWASetup'
 import { default as default_16b88e9b8c48e393fa86591406efd08f } from '../../../components/admin/Dashboard'
 import { default as default_00bf88b6ac2721f80ddeeb061ad9e670 } from '../../../components/admin/apps/GoogleAnalytics/GoogleAnalyticsPage'
 import { CollectionCards as CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1 } from '@payloadcms/next/rsc'
@@ -90,6 +91,7 @@ export const importMap = {
   "/components/admin/navigation/CustomNav#default": default_145f52386bb5872e94db93031c3734ca,
   "/components/admin/Icon#default": default_dfe4008080d895d460898c3a6155e9ba,
   "/components/admin/Logo#default": default_91a09b539d3c86b0aebf520e7564ce08,
+  "/components/admin/PWASetup#PWASetup": PWASetup_70340a21dcb353c766c8d4fccf7ebed6,
   "/components/admin/Dashboard#default": default_16b88e9b8c48e393fa86591406efd08f,
   "/components/admin/apps/GoogleAnalytics/GoogleAnalyticsPage#default": default_00bf88b6ac2721f80ddeeb061ad9e670,
   "@payloadcms/next/rsc#CollectionCards": CollectionCards_f9c02e79a4aed9a3924487c0cd4cafb1
