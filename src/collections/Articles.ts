@@ -201,6 +201,7 @@ export const Articles: CollectionConfig = {
         // 8. Tag Validation & Deduplication
         if (data.tags && Array.isArray(data.tags)) {
           const rawTagIds = data.tags.map(getParentId).filter(Boolean) as (string | number)[]
+          const uniqueTags: (string | number)[] = []
           const uniqueTagSet = new Set<string>()
 
           for (const tid of rawTagIds) {
@@ -209,9 +210,10 @@ export const Articles: CollectionConfig = {
               throw new APIError(`Duplicate tag reference detected: ID ${strId}. Tags must be unique.`, 400)
             }
             uniqueTagSet.add(strId)
+            uniqueTags.push(tid)
           }
 
-          for (const tid of rawTagIds) {
+          for (const tid of uniqueTags) {
             try {
               const tagDoc = await req.payload.findByID({
                 collection: 'tags',
@@ -227,7 +229,7 @@ export const Articles: CollectionConfig = {
             }
           }
 
-          data.tags = Array.from(uniqueTagSet)
+          data.tags = uniqueTags
         }
 
         // 9. Featured Image Media Validation
