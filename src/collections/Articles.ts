@@ -113,7 +113,11 @@ export const Articles: CollectionConfig = {
           targetSlug = originalDoc.slug
         }
 
-        data.slug = targetSlug
+        if (targetSlug) {
+          data.slug = targetSlug
+        } else {
+          data.slug = null
+        }
 
         if (data.slug) {
           const currentId = originalDoc?.id || (data as any)?.id
