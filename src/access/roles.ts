@@ -224,20 +224,10 @@ export const canCreateTag: Access = ({ req: { user } }) => {
 }
 
 /**
- * Tag access: Read tag (Public for active tags)
+ * Tag access: Read tag (Public)
  */
-export const canReadTag: Access = ({ req: { user } }) => {
-  if (user && isActive(user)) {
-    const validRoles: UserRole[] = ['super_admin', 'admin', 'editor']
-    if (validRoles.includes(user.role as UserRole)) {
-      return true
-    }
-  }
-  return {
-    status: {
-      equals: 'active',
-    },
-  } as Where
+export const canReadTag: Access = () => {
+  return true
 }
 
 /**
