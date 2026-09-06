@@ -1,6 +1,6 @@
 import type { CollectionConfig } from 'payload'
 import { APIError } from 'payload'
-import { lexicalEditor, FixedToolbarFeature } from '@payloadcms/richtext-lexical'
+import { lexicalEditor, FixedToolbarFeature, EXPERIMENTAL_TableFeature } from '@payloadcms/richtext-lexical'
 import {
   canCreateArticle,
   canDeleteArticle,
@@ -345,7 +345,11 @@ export const Articles: CollectionConfig = {
       name: 'content',
       type: 'richText',
       editor: lexicalEditor({
-        features: ({ defaultFeatures }) => [...defaultFeatures, FixedToolbarFeature()],
+        features: ({ defaultFeatures }) => [
+          ...defaultFeatures,
+          FixedToolbarFeature(),
+          EXPERIMENTAL_TableFeature(),
+        ],
       }),
       required: false,
       admin: {

@@ -162,7 +162,6 @@ export async function bulkCreateTagsAction(names: string[]): Promise<{
         collection: 'tags',
         data: {
           name: trimmed,
-          status: 'active',
         },
       })
       createdTags.push(newTag as any as TagDoc)
@@ -252,8 +251,6 @@ export async function updateTagAction(data: {
       id: data.id,
       data: {
         name: data.name,
-        description: data.description || '',
-        status: data.status || 'active',
       },
     })
     return { success: true, tag: updated as any as TagDoc }

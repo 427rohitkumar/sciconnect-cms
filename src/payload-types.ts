@@ -257,9 +257,7 @@ export interface Category {
 export interface Tag {
   id: number;
   name: string;
-  description?: string | null;
   slug?: string | null;
-  status: 'active' | 'inactive';
   updatedAt: string;
   createdAt: string;
 }
@@ -321,6 +319,7 @@ export interface Article {
   } | null;
   featuredImage?: (number | null) | Media;
   isFeatured?: boolean | null;
+  isTrending?: boolean | null;
   publishedAt?: string | null;
   author?: (number | null) | Author;
   categories?: (number | Category)[] | null;
@@ -769,9 +768,7 @@ export interface CategoriesSelect<T extends boolean = true> {
  */
 export interface TagsSelect<T extends boolean = true> {
   name?: T;
-  description?: T;
   slug?: T;
-  status?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -797,6 +794,7 @@ export interface ArticlesSelect<T extends boolean = true> {
   transcript?: T;
   featuredImage?: T;
   isFeatured?: T;
+  isTrending?: T;
   publishedAt?: T;
   author?: T;
   categories?: T;
@@ -1078,6 +1076,10 @@ export interface SiteSetting {
    * Create or open your Looker Studio report, choose Embed report, and paste the generated Embed URL here.
    */
   lookerStudioEmbedUrl?: string | null;
+  /**
+   * How quickly frontend content (articles, menus, etc) should refresh after you make a change in the CMS.
+   */
+  cacheRevalidate?: ('5' | '15' | '30' | '60' | '300' | '900' | '3600') | null;
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -1201,6 +1203,7 @@ export interface SiteSettingsSelect<T extends boolean = true> {
   gtmId?: T;
   enableAnalyticsApp?: T;
   lookerStudioEmbedUrl?: T;
+  cacheRevalidate?: T;
   updatedAt?: T;
   createdAt?: T;
   globalType?: T;
